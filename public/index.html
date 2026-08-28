@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Financial Wellness Platform</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <main id="authView" class="auth-layout">
+    <section class="auth-copy">
+      <div class="logo">$</div><p class="eyebrow">Financial Wellness</p>
+      <h1>Make your money feel manageable.</h1>
+      <p>Track income, expenses, monthly progress, and a debt payoff estimate from one simple dashboard.</p>
+      <div class="database-status"><span id="dbDot"></span><div><strong id="dbStatus">Checking MySQL…</strong><small>XAMPP database connection</small></div></div>
+    </section>
+    <section class="auth-card card">
+      <div class="tabs"><button class="tab active" data-tab="login">Login</button><button class="tab" data-tab="register">Register</button></div>
+      <form id="loginForm" class="form-panel active">
+        <h2>Welcome back</h2><p>Sign in to open your dashboard.</p>
+        <label>Email<input name="email" type="email" placeholder="john@example.com" required></label>
+        <label>Password<input name="password" type="password" placeholder="Password123!" required></label>
+        <button class="primary" type="submit">Sign in</button>
+      </form>
+      <form id="registerForm" class="form-panel">
+        <h2>Create an account</h2><p>Your password is securely hashed before storage.</p>
+        <div class="two-col"><label>First name<input name="firstName" placeholder="John" required></label><label>Last name<input name="lastName" placeholder="Smith" required></label></div>
+        <label>Email<input name="email" type="email" placeholder="john@example.com" required></label>
+        <label>Username<input name="username" placeholder="johnsmith" required></label>
+        <label>Password<input name="password" type="password" minlength="8" placeholder="At least 8 characters" required></label>
+        <button class="primary" type="submit">Create account</button>
+      </form>
+    </section>
+  </main>
+
+  <main id="dashboardView" class="app-layout hidden">
+    <aside>
+      <div class="brand"><div class="logo">$</div><strong>Financial<br>Wellness</strong></div>
+      <nav><a href="#overview" class="active">▦ <span>Dashboard</span></a><a href="#addIncome">↗ <span>Income</span></a><a href="#addExpense">↘ <span>Expenses</span></a><a href="#calculator">◫ <span>Calculator</span></a></nav>
+      <button id="logoutButton" class="outline">Sign out</button>
+    </aside>
+    <section class="content">
+      <header><div><p class="eyebrow" id="monthLabel"></p><h1>Welcome back, <span id="firstName">User</span></h1><p>Here is your current monthly snapshot.</p></div><div class="environment"><i></i>Local test environment</div></header>
+
+      <section id="overview" class="summary-grid">
+        <article class="summary card"><div class="icon green">↗</div><div><span>Income</span><strong id="totalIncome">$0.00</strong></div></article>
+        <article class="summary card"><div class="icon orange">↘</div><div><span>Expenses</span><strong id="totalExpenses">$0.00</strong></div></article>
+        <article class="summary card"><div class="icon blue">$</div><div><span>Remaining</span><strong id="remaining">$0.00</strong></div></article>
+        <article class="summary card"><div class="icon purple">▤</div><div><span>Outstanding debt</span><strong id="totalDebt">$0.00</strong></div></article>
+      </section>
+
+      <section class="main-grid">
+        <article class="card budget-card"><div class="card-title"><div><h2>Monthly cash flow</h2><p>Income remaining after expenses</p></div><strong id="remainingPercent">0%</strong></div><div class="progress"><span id="progressBar"></span></div><div class="progress-labels"><span id="spentLabel">$0 spent</span><span id="incomeLabel">$0 income</span></div><div class="tip"><strong>Testing tip</strong><p>Add an income or expense below. The summary updates using values stored in MySQL.</p></div></article>
+        <article class="card activity-card"><div class="card-title"><div><h2>Recent activity</h2><p>Latest database entries</p></div></div><div id="activityList" class="activity-list"><p class="empty">No activity yet.</p></div></article>
+      </section>
+
+      <section class="form-grid">
+        <article id="addIncome" class="card form-card"><h2>＋ Add income</h2><form id="incomeForm">
+          <label>Source<input name="source" placeholder="Employer" required></label>
+          <div class="two-col"><label>Amount<input name="amount" type="number" min="0.01" step="0.01" placeholder="4500.00" required></label><label>Type<select name="incomeType"><option>Salary</option><option>Side Income</option><option>Investment</option><option>Other</option></select></label></div>
+          <label>Date<input name="incomeDate" type="date" required></label><label>Description<input name="description" placeholder="Monthly paycheck"></label>
+          <button class="primary">Add income</button>
+        </form></article>
+        <article id="addExpense" class="card form-card"><h2>＋ Add expense</h2><form id="expenseForm">
+          <label>Merchant<input name="merchant" placeholder="Kroger"></label>
+          <div class="two-col"><label>Amount<input name="amount" type="number" min="0.01" step="0.01" placeholder="75.50" required></label><label>Category<select id="categorySelect" name="categoryId" required><option value="">Loading…</option></select></label></div>
+          <label>Date<input name="expenseDate" type="date" required></label><label>Description<input name="description" placeholder="Groceries"></label>
+          <button class="primary">Add expense</button>
+        </form></article>
+        <article id="calculator" class="card form-card"><h2>◫ Debt payoff</h2><form id="calculatorForm">
+          <label>Current balance<input name="balance" type="number" min="0.01" step="0.01" placeholder="10000" required></label>
+          <div class="two-col"><label>Interest rate (%)<input name="interestRate" type="number" min="0" step="0.01" placeholder="18" required></label><label>Monthly payment<input name="monthlyPayment" type="number" min="0.01" step="0.01" placeholder="400" required></label></div>
+          <button class="primary">Calculate payoff</button>
+        </form><div id="calculatorResult" class="result hidden"></div></article>
+      </section>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
