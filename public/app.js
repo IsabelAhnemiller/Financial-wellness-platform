@@ -133,20 +133,6 @@ async function loadSummary() {
         / data.totalIncome) * 100;
   }
 
-  score = Math.max(0, Math.min(100, score));
-
-  $("#healthScore").textContent =
-    `${Math.round(score)}/100`;
-
-  const el = $("#healthScore");
-
-  if (score > 70)
-    el.style.color = "green";
-  else if (score > 40)
-    el.style.color = "orange";
-  else
-    el.style.color = "red";
-
   const currentSavings = data.remaining;
   updateSavingsGoal(currentSavings, savingsGoal)
   
@@ -166,6 +152,18 @@ async function loadSummary() {
         (savingsGoal - currentSavings)
         / monthlyGrowth
     );
+
+  score = Math.max(0, Math.min(100, score));
+
+  $("#healthScore").textContent =
+    `${Math.round(score)}/100`;
+
+  if (score > 70)
+    $("#healthScore").style.color = "#176b51";
+  else if (score > 40)
+    $("#healthScore").style.color = "#a85e16";
+  else
+    $("#healthScore").style.color = "#a83f3f";
 }
 
 function escapeHtml(value) { const node = document.createElement("div"); node.textContent = String(value); return node.innerHTML; }
@@ -214,79 +212,38 @@ function renderDebtProjection(totalDebt, remaining) {
         balance -= payment;
         month++;
     }
+  
+    debtChart = new Chart(canvas, {
+    type: "line",
 
-    debtChart=new Chart(canvas, {
-        type: "line",
+    data: {
+        labels,
+        datasets: [{
+            label: "Projected Debt",
 
-        data: {
-            labels,
-            datasets: [{
-                label: "Projected Debt",
-                data: values,
-                borderColor: "#8b5cf6",
-                tension: 0.3
-            }]
+            data: values,
+
+            borderColor: "#7352a3",
+            backgroundColor: "#7352a320",
+
+            fill: true,
+
+            tension: 0.3
+        }]
+    },
+    options: {
+        responsive: true,
+
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
         }
-    });
+    }
+  });
 }
-
-score = Math.max(0, Math.min(100, score));
-
-$("#healthScore").textContent =
-    `${Math.round(score)}/100`;
-
-const el = $("#healthScore");
-
-if (score > 70)
-    el.style.color = "#176b51";
-else if (score > 40)
-    el.style.color = "#a85e16";
-else
-    el.style.color = "#a83f3f";
-
-
-function generateInsights(data) {
-
-    const insights = [];
-
-    if (data.totalExpenses >
-        data.totalIncome * 0.8) {
-
-        insights.push(
-            "Expenses are consuming over 80% of your income."
-        );
-    }
-
-    if (data.remaining > 1000) {
-        insights.push(
-            "Great job! You have over $1,000 remaining."
-        );
-    }
-
-    if (data.totalDebt > data.totalIncome) {
-        insights.push(
-            "Debt exceeds monthly income."
-        );
-    }
-
-    $("#insightsList").innerHTML =
-      insights.length
-        ? insights.map(
-          insight => `
-          <div class="tip">
-            <strong>Insight</strong>
-            <p>${insight}</p>
-          </div>
-        `).join("")
-        : `
-          <div class="tip">
-            <strong>Looking Good</strong>
-            <p>No recommendations right now.</p>
-          </div>
-        `;
-}
-
-generateInsights(data);
-
-
-
