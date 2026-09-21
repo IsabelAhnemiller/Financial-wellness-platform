@@ -49,12 +49,30 @@
         <article class="summary card"><div class="icon orange">↘</div><div><span>Expenses</span><strong id="totalExpenses">$0.00</strong></div></article>
         <article class="summary card"><div class="icon blue">$</div><div><span>Remaining</span><strong id="remaining">$0.00</strong></div></article>
         <article class="summary card"><div class="icon purple">▤</div><div><span>Outstanding debt</span><strong id="totalDebt">$0.00</strong></div></article>
+        <article class="summary card">
+          <div class="icon green">♥</div>
+          <div><span>Financial Health Score</span>
+          <strong id="healthScore">98/100</strong></div>
+        </article>
       </section>
 
       <section class="main-grid">
         <article class="card budget-card"><div class="card-title"><div><h2>Monthly cash flow</h2><p>Income remaining after expenses</p></div><strong id="remainingPercent">0%</strong></div><div class="progress"><span id="progressBar"></span></div><div class="progress-labels"><span id="spentLabel">$0 spent</span><span id="incomeLabel">$0 income</span></div><div class="tip"><strong>Testing tip</strong><p>Add an income or expense below. The summary updates using values stored in MySQL.</p></div></article>
+        <article class="chart-card"><div class="card-title"><div><h2>Income vs. Expenses</h2><p>Monthly financial overview</p></div></div><canvas id="budgetChart"></canvas></article>
         <article class="card activity-card"><div class="card-title"><div><h2>Recent activity</h2><p>Latest database entries</p></div></div><div id="activityList" class="activity-list"><p class="empty">No activity yet.</p></div></article>
       </section>
+
+  <article class="card insights-card">
+    <div class="card-title">
+        <div>
+            <h2>Financial Insights</h2>
+            <p>Simple recommendations based on your activity</p>
+        </div>
+    </div>
+
+    <div id="insightsList" class="insights-list"></div>
+  </article>
+
 
       <section class="form-grid">
         <article id="addIncome" class="card form-card"><h2>＋ Add income</h2><form id="incomeForm">
@@ -74,9 +92,66 @@
           <div class="two-col"><label>Interest rate (%)<input name="interestRate" type="number" min="0" step="0.01" placeholder="18" required></label><label>Monthly payment<input name="monthlyPayment" type="number" min="0.01" step="0.01" placeholder="400" required></label></div>
           <button class="primary">Calculate payoff</button>
         </form><div id="calculatorResult" class="result hidden"></div></article>
+       
+        <article class="card form-card">
+         <h2>＋ Add debt</h2>
+          <form id="debtForm">
+          <label>
+            Debt Name
+            <input name="debtName" placeholder="Credit Card">
+          </label>
+          <label>
+            Amount
+            <input name="amount" type="number" step="0.01" required>
+          </label>
+          <button class="primary">
+            Add Debt
+          </button>
+          </form></article>
       </section>
+
+        <section class="analytics-grid">
+          <article class="chart-card card">
+           <div class="card-title">
+            <div>
+              <h2>Debt Projection</h2>
+              <p>Estimated payoff based on available cash flow</p>
+             </div>
+            </div>
+            <canvas id="debtProjectionChart"></canvas>
+          </article>
+        </section>
+
+      <section class="goal-card card">
+        <div class="goal-header">
+          <h2>Financial Goals Progress</h2>
+          <span id="savingsPercent">0% Complete</span>
+        </div>
+        <p id="goalDisplay">
+            Goal: $5000
+          </p>
+        <div class="savings-bar-large"> 
+          <div id="savingsFill" class="savings-fill"></div>
+        </div>
+          <div class="goal-input">
+            <label>Set Savings Goal</label>
+            <input type="number" id="goalAmount" placeholder="5000" min="1">
+            <button type="button" id="saveGoalButton">Save Goal</button>
+          </div>
+       
+        <p>
+          Current Savings:
+          <strong id="savings">$0.00</strong>
+        </p>
+      </section>
+
     </section>
-  </main>
+  
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
+
+
+  
+  </main>
 </body>
 </html>
